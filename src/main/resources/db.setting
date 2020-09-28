@@ -1,0 +1,18 @@
+## db.setting文件
+
+## 这里的test_db1、test_db1、db3是下面对应数据源的标识,不要求与数据库名一样，如db3，个人习惯设置为数据库名。
+
+[test_db1]
+url = jdbc:mysql://localhost:3306/test_db1?allowMultiQueries=true&useUnicode=true&serverTimezone=UTC&characterEncoding=utf8
+user = frost2
+pass = pass
+
+[test_db2]
+url = jdbc:mysql://localhost:3306/test_db2?allowMultiQueries=true&useUnicode=true&serverTimezone=UTC&characterEncoding=utf8
+user = frost2
+pass = pass
+
+[db3]
+url = jdbc:mysql://localhost:3306/test_db3?allowMultiQueries=true&useUnicode=true&serverTimezone=UTC&characterEncoding=utf8
+user = frost2
+pass = pass
