@@ -19,6 +19,7 @@ public class QuartzUtil {
 
     private static SchedulerFactory schedulerFactory = new StdSchedulerFactory();
     private static Scheduler scheduler;
+    private final static String groupName = "DEFAULT";
 
     static {
         try {
@@ -46,24 +47,22 @@ public class QuartzUtil {
     public static <T extends Job> boolean addJob(String jobName, String triggerName, String description,
                                                  Class<T> jobClass, String cron) {
         try {
-            JobDetail jobDetail = JobBuilder.newJob(jobClass)
-                    .withIdentity(jobName)
+            SchedulerFactory schedulerFactory = new StdSchedulerFactory();
+            Scheduler scheduler = schedulerFactory.getScheduler();
+            scheduler.start();
+
+            JobDetail job = JobBuilder.newJob(jobClass)
+                    .withIdentity(jobName, groupName)
                     .withDescription(description)
-//                    .usingJobData("param1", "将参数")
-//                    .usingJobData("param2", "传递到JOB任务中使用")
                     .build();
 
-            CronTrigger cronTrigger = TriggerBuilder.newTrigger()
-                    .withIdentity(triggerName)
+            Trigger trigger = TriggerBuilder.newTrigger()
+                    .withIdentity(triggerName, groupName)
                     .startNow()
                     .withSchedule(CronScheduleBuilder.cronSchedule(cron))
                     .build();
 
-            scheduler.scheduleJob(jobDetail, cronTrigger);
-
-            if (!scheduler.isShutdown()) {
-                scheduler.start();
-            }
+            scheduler.scheduleJob(job, trigger);
             return scheduler.isStarted();
         } catch (Exception e) {
             throw new CustomException(Code.EXECUTION_ERROR);
