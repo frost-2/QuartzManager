@@ -47,8 +47,6 @@ public class QuartzUtil {
     public static <T extends Job> boolean addJob(String jobName, String triggerName, String description,
                                                  Class<T> jobClass, String cron) {
         try {
-            SchedulerFactory schedulerFactory = new StdSchedulerFactory();
-            Scheduler scheduler = schedulerFactory.getScheduler();
             scheduler.start();
 
             JobDetail job = JobBuilder.newJob(jobClass)
